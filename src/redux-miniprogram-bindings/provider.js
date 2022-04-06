@@ -44,13 +44,15 @@ function storeProvider(provider) {
         this.emit(CHANNEL, state);
       });
     },
-    connector(state2Props, callback) {
+    connector(state2Props, ...fns) {
+      const callback = R.last(fns);
+      const areStatesEqual = R.length(fns) === 2 ? R.head(fns) : _areStatesEqual;
       const NEXT = guid();
       const emitter = this.emit.bind(this);
       const onMessage = this.onMessage.bind(this);
       const onValue = (...value) => emitter(NEXT, ...value);
       const relayUnsubcribe = onMessage(NEXT, callback);
-      const newCb = memoFn(state2Props, onValue);
+      const newCb = memoFn(state2Props, areStatesEqual, onValue);
       newCb(getProvider().store.getState());
       const unsubscribe = onMessage(CHANNEL, newCb);
       return () => {
@@ -64,9 +66,7 @@ function storeProvider(provider) {
   };
 }
 const _areStatesEqual = (a, b) => a === b;
-const memoFn = (selector, ...fns) => {
-  const fn = R.last(fns);
-  const areStatesEqual = R.length(fns) === 2 ? R.head(fns) : _areStatesEqual;
+const memoFn = (selector, areStatesEqual, fn) => {
   fn.value = null;
   fn.excutedFirst = false;
   return (state) => {
