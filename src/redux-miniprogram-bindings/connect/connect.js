@@ -52,5 +52,5 @@ function connect({ type = 'page', mapState, mapDispatch } = {}) {
   };
 }
 const connectComponent = (props) => connect({ ...props, type: 'component' });
-export { connectComponent };
+export { connect, connectComponent };
 export default connect;

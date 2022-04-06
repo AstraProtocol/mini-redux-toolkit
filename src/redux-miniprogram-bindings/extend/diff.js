@@ -98,7 +98,6 @@ function diff(currData, prevData, rootPath = '') {
     }
     const prevValue = prevData[key];
     if (currValue !== prevValue) {
-      // console.log(getType, currValue);
       const currValueType = getType(currValue);
       const prevValueType = getType(prevValue);
       if (currValueType !== prevValueType) {
