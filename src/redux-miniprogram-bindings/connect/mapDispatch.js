@@ -16,7 +16,7 @@ function handleMapDispatchFunction(mapDispatch, target) {
   const dispatch = useDispatch();
   const boundActionCreators = mapDispatch(dispatch);
   if (!isPlainObject(boundActionCreators)) {
-    warn('mapDispatch函数必须返回一个对象');
+    warn('mapDispatch should be Map<string, function>');
   }
   Object.assign(target, boundActionCreators);
 }

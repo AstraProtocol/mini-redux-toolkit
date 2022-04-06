@@ -63,13 +63,15 @@ function storeProvider(provider) {
     },
   };
 }
-
-const memoFn = (selector, fn) => {
+const _areStatesEqual = (a, b) => a === b;
+const memoFn = (selector, ...fns) => {
+  const fn = R.last(fns);
+  const areStatesEqual = R.length(fns) === 2 ? R.head(fns) : _areStatesEqual;
   fn.value = null;
   fn.excutedFirst = false;
   return (state) => {
     const newValue = selector(state);
-    if (!fn.excutedFirst || fn.value !== newValue) {
+    if (!fn.excutedFirst || !areStatesEqual(fn.value, newValue)) {
       fn.value = newValue;
       fn.excutedFirst = true;
       fn(fn.value);
