@@ -3,7 +3,6 @@
   "version": "1.0.1",
   "module": "dist/index.js",
   "main": "dist/index.js",
-  "private": true,
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
   },
