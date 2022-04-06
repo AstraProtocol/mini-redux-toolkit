@@ -21,7 +21,6 @@
     "lint-staged": "lint-staged"
   },
   "dependencies": {
-    "@tikivn/mini-redux-toolkit": "file:.yalc/@tikivn/mini-redux-toolkit",
     "ramda": "^0.27.1",
     "redux": "^4.1.2",
     "redux-persist": "^6.0.0",
