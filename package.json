@@ -1,7 +1,7 @@
 {
   "name": "@tikivn/mini-redux-toolkit",
   "version": "1.0.0",
-  "module": "dist/index.esm.js",
+  "module": "dist/index.js",
   "main": "dist/index.js",
   "private": true,
   "publishConfig": {
