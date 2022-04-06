@@ -1,0 +1,26 @@
+{
+  "parser": "@babel/eslint-parser",
+  "extends": "eslint:recommended",
+  "parserOptions": {
+    "sourceType": "module",
+  },
+  "plugins": ["jest"],
+  "env": {
+    "browser": true,
+    "es6": true,
+    "jest/globals": true
+  },
+  "rules": {
+    "semi": [1, "always"]
+  },
+  "ignorePatterns": ["webpack.config.js", "**/vendor/*.js"],
+  "globals": {
+    "process": true,
+    "my": true,
+    "App": true,
+    "Component": true,
+    "Page": true,
+    "getApp": true,
+    "Buffer": true
+  }
+}

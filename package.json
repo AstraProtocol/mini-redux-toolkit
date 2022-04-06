@@ -1,0 +1,53 @@
+{
+  "name": "@tikivn/mini-redux-toolkit",
+  "version": "1.0.0",
+  "module": "dist/index.esm.js",
+  "main": "dist/index.js",
+  "private": true,
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "files": [
+    "dist/**/*.js"
+  ],
+  "scripts": {
+    "prestart": "npm run build",
+    "start": "echo start",
+    "build": "rm -rf dist && webpack",
+    "test:nowatch": "jest",
+    "test": "jest --watch",
+    "prepare": "husky install",
+    "lint": "eslint --fix --quiet",
+    "format": "prettier --loglevel=silent --write",
+    "lint-staged": "lint-staged"
+  },
+  "dependencies": {
+    "@tikivn/mini-redux-toolkit": "file:.yalc/@tikivn/mini-redux-toolkit",
+    "ramda": "^0.27.1",
+    "redux": "^4.1.2",
+    "redux-persist": "^6.0.0",
+    "redux-saga": "^1.1.3"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.16.0",
+    "@babel/eslint-parser": "^7.16.0",
+    "@babel/preset-env": "^7.16.0",
+    "babel-jest": "^27.3.1",
+    "babel-loader": "^8.2.4",
+    "eslint": "^8.1.0",
+    "eslint-plugin-jest": "^25.2.3",
+    "husky": "^7.0.0",
+    "jest": "^27.3.1",
+    "lint-staged": "^11.2.6",
+    "prettier": "^2.4.1",
+    "terser-webpack-plugin": "^5.3.1",
+    "webpack": "^5.71.0",
+    "webpack-cli": "^4.9.2"
+  },
+  "lint-staged": {
+    "*.js": [
+      "npm run lint",
+      "npm run format"
+    ]
+  }
+}
