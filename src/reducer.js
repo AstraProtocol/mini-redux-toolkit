@@ -14,9 +14,9 @@ function getReducer(namespace, key, handler) {
   };
 }
 
-function composeReducer(previousReducer, currentReducer) {
+function composeReducer(previousReducer, currentReducer, _state) {
   return function (state, action) {
-    return previousReducer(currentReducer(state, action), action);
+    return previousReducer(currentReducer(state || _state, action), action);
   };
 }
 const defaultReducer = (state) => Object.assign({}, state);
@@ -34,12 +34,12 @@ function getPersistReducer(model, storage) {
 }
 
 function fromModel(model, storage) {
-  const { reducer: reducers, state, namespace } = model;
+  const { reducer: reducers, namespace } = model;
   const pairs = R.toPairs(reducers);
   const rootReducer = R.reduce(
     (acc, [actionType, actionHandler]) =>
       composeReducer(acc, getReducer(namespace, actionType, actionHandler)),
-    defaultReducer(state),
+    defaultReducer,
     pairs
   );
   return getPersistReducer(model, storage)(rootReducer);

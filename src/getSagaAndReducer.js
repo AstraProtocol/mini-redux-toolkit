@@ -2,6 +2,7 @@ import * as R from 'ramda';
 import * as sagaEffects from 'redux-saga/effects';
 import createReducerFromModel from './reducer';
 import createSagaFromModel from './effect';
+import createStateFromModel from './init-state';
 
 function createRootSaga(sagas) {
   return function* rootSaga() {
@@ -27,14 +28,13 @@ const getSagaAndReducerFromModel = ({ models, storage, onError, onEffect = [] })
     {},
     models
   );
-  console.log('combinedReducer', combinedReducer);
   const saga = createRootSaga(
     R.flatten(R.map((model) => mergeAllSagas(model, onError, onEffect), models))
   );
-  console.log('saga', saga);
   return {
     reducer: combinedReducer,
     saga,
+    state: createStateFromModel(models),
   };
 };
 
