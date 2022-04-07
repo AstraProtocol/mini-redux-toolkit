@@ -5,10 +5,13 @@ import getSagaAndReducer from './getSagaAndReducer';
 
 const _createStore = ({ storage, models, onError }) => {
   const { reducer, saga } = getSagaAndReducer({ models, storage, onError });
+  console.log(reducer, saga);
   const sagaMiddleware = createSagaMiddleware();
+  console.log(combineReducers(reducer));
   const store = createStore(combineReducers(reducer), applyMiddleware(sagaMiddleware));
   const persistor = persistStore(store);
   sagaMiddleware.run(saga);
+  console.log(persistor);
   return { persistor, store };
 };
 
