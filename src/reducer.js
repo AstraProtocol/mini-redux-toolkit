@@ -9,7 +9,7 @@ function getActionType(namespace, actionType) {
 function getReducer(namespace, key, handler) {
   const actionType = getActionType(namespace, key);
   return function (state, action) {
-    if (R.equals(R.prop('type', action), actionType)) return handler(state);
+    if (R.equals(R.prop('type', action), actionType)) return handler(state, action);
     return state;
   };
 }
