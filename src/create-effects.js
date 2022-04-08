@@ -1,6 +1,7 @@
 import * as R from 'ramda';
 import * as sagaEffects from 'redux-saga/effects';
 import { getActionType, toActionType } from './action-type';
+import { CANCEL_EFFECT } from './config';
 
 function createEffects(model) {
   function put(action) {
@@ -39,7 +40,16 @@ function createEffects(model) {
       return sagaEffects.take(type);
     }
   }
-  return { ...sagaEffects, put, take };
+
+  function stopPolling(action) {
+    const { type } = action;
+    const actionTypeElements = getActionType(type);
+    return sagaEffects.put({
+      ...action,
+      type: toActionType(R.mergeLeft({ actionStatus: CANCEL_EFFECT }, actionTypeElements), model),
+    });
+  }
+  return { ...sagaEffects, put, take, stopPolling };
 }
 
 export default createEffects;
