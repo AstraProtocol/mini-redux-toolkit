@@ -4,6 +4,9 @@ import { NAMESPACE_SEP, CANCEL_EFFECT } from './config';
 import { getActionType, toActionType } from './action-type';
 import createEffects from './create-effects';
 
+const SHOW = '@@TINI_LOADING/SHOW';
+const HIDE = '@@TINI_LOADING/HIDE';
+
 function from({ namespace, saga, key, ms, onError, onEffect, type, sagaEffects }) {
   return {
     namespace,
@@ -47,9 +50,11 @@ function getSagaConfig(config) {
 function handlerWrapper(key, fn, _sagaEffects, onError) {
   return function* (...args) {
     try {
+      yield put({ type: SHOW, payload: { actionType: key } });
       yield put({ type: `${key}${NAMESPACE_SEP}@@start` });
       yield fn(...[...args, _sagaEffects]);
       yield put({ type: `${key}${NAMESPACE_SEP}@@end` });
+      yield put({ type: HIDE, payload: { actionType: key } });
     } catch (error) {
       onError(error, {
         key,
