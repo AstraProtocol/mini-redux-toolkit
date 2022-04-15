@@ -2,6 +2,13 @@ import * as R from 'ramda';
 import { NAMESPACE_SEP } from './config';
 
 function getActionType(type) {
+  const isSpecialType = R.startsWith('@@', type);
+  if (isSpecialType)
+    return {
+      namespace: null,
+      actionType: type,
+      actionStatus: null,
+    };
   const parts = R.split(NAMESPACE_SEP, type);
   if (R.length(parts) === 3) {
     return {
