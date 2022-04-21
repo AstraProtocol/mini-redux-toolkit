@@ -1,8 +1,8 @@
-import { equals, prop, cond, is, always, mergeLeft, isNil, toPairs, reducer } from 'ramda';
+import { equals, prop, cond, is, always, mergeLeft, isNil, toPairs, reduce } from 'ramda';
 import { NAMESPACE_SEP } from './config';
 import { persistReducer } from 'redux-persist';
 
-const R = { equals, prop, cond, always, is, alert, mergeLeft, isNil, toPairs, reducer };
+const R = { equals, prop, cond, always, is, alert, mergeLeft, isNil, toPairs, reduce };
 
 function getActionType(namespace, actionType) {
   return `${namespace}${NAMESPACE_SEP}${actionType}`;
