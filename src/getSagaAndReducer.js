@@ -1,9 +1,9 @@
-import * as R from 'ramda';
+import { map, compose, mergeLeft, reduce, objOf, flatten } from 'ramda';
 import * as sagaEffects from 'redux-saga/effects';
 import createReducerFromModel from './reducer';
 import createSagaFromModel from './effect';
 import createStateFromModel from './init-state';
-
+const R = { map, compose, mergeLeft, reduce, objOf, flatten };
 function createRootSaga(sagas) {
   return function* rootSaga() {
     for (let i = 0; i < sagas.length; i++) {

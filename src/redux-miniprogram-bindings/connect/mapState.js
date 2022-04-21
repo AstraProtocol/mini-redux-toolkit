@@ -1,7 +1,8 @@
 import { useState } from '../extend/hooks';
-import * as R from 'ramda';
+import { tryCatch, always } from 'ramda';
 import { hasOwnProperty, isPlainObject } from '../utils';
 
+const R = { tryCatch, always };
 export default function handleMapState(mapState) {
   const state = useState();
   const ownState = {};

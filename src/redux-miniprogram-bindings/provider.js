@@ -1,5 +1,6 @@
 import { isFunction, isPlainObject, warn, guid } from './utils';
-import * as R from 'ramda';
+import { last, length, head, prop } from 'ramda';
+const R = { last, length, head, prop };
 
 const lifetimes = {
   page: ['onLoad', 'onUnload'],
