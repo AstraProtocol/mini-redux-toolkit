@@ -1,3 +1,4 @@
+const webpack = require('webpack');
 const path = require('path');
 const TerserJSPlugin = require('terser-webpack-plugin');
 
@@ -8,9 +9,6 @@ const defaultConfig = (props, developmentMode) =>
     mode: developmentMode ? 'development' : 'production',
     optimization: {
       minimizer: [developmentMode ? null : new TerserJSPlugin({})].filter(Boolean),
-    },
-    externals: {
-      ramda: 'ramda',
     },
     module: {
       rules: [

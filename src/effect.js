@@ -1,10 +1,8 @@
-import { head, pathOr, toPairs, compose, map, prop, equals, mergeLeft } from 'ramda';
+import * as R from 'ramda';
 import { takeLatest, throttle, takeEvery, put, call, take, race, delay } from 'redux-saga/effects';
 import { NAMESPACE_SEP, CANCEL_EFFECT } from './config';
 import { getActionType, toActionType } from './action-type';
 import createEffects from './create-effects';
-
-const R = { head, pathOr, toPairs, compose, map, prop, equals, mergeLeft };
 
 const SHOW = '@@TINI_LOADING/SHOW';
 const HIDE = '@@TINI_LOADING/HIDE';

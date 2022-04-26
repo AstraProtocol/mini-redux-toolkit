@@ -1,5 +1,4 @@
-import { compose, props, map } from 'ramda';
-const R = { compose, props, map };
+import * as R from 'ramda';
 function fromModels(models) {
   return R.compose(R.fromPairs, R.map(R.props(['namespace', 'state'])))(models);
 }

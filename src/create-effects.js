@@ -1,9 +1,7 @@
-import { is, mergeLeft } from 'ramda';
+import * as R from 'ramda';
 import * as sagaEffects from 'redux-saga/effects';
 import { getActionType, toActionType } from './action-type';
 import { CANCEL_EFFECT } from './config';
-
-const R = { is, mergeLeft };
 
 function createEffects(model) {
   function put(action) {

@@ -1,7 +1,5 @@
-import { length, startsWith, last, path, head, join, split, find } from 'ramda';
+import * as R from 'ramda';
 import { NAMESPACE_SEP } from './config';
-
-const R = { length, startsWith, last, path, head, join, split, find };
 
 function getActionType(type) {
   const isSpecialType = R.startsWith('@@', type);
