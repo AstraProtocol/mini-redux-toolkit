@@ -1,5 +1,15 @@
 import * as R from 'ramda';
-import { takeLatest, throttle, takeEvery, put, call, take, race, delay } from 'redux-saga/effects';
+import {
+  takeLatest,
+  throttle,
+  takeEvery,
+  put,
+  call,
+  take,
+  delay,
+  cancel,
+  fork,
+} from 'redux-saga/effects';
 import { NAMESPACE_SEP, CANCEL_EFFECT } from './config';
 import { getActionType, toActionType } from './action-type';
 import createEffects from './create-effects';
@@ -63,15 +73,31 @@ function handlerWrapper(key, fn, _sagaEffects, onError) {
     }
   };
 }
-
-function handlerWrapperPolling(key, fn, ms, _sagaEffects, onError) {
-  function* worker(...args) {
+function pollingForkFnCreator(fn, _sagaEffects, ms, onError) {
+  return function* pollingForkFn(action) {
     while (true) {
       try {
-        yield put({ type: `${key}${NAMESPACE_SEP}@@start` });
-        yield fn(...[...args, _sagaEffects]);
-        yield put({ type: `${key}${NAMESPACE_SEP}@@end` });
+        const loadingPayload = getActionType(R.propOr('', 'type', action));
+        yield put({ type: SHOW, payload: loadingPayload });
+        yield call(fn, action, _sagaEffects);
+        yield put({ type: HIDE, payload: loadingPayload });
         yield delay(ms);
+      } catch (error) {
+        onError(error, { action });
+      }
+    }
+  };
+}
+function handlerWrapperPolling(key, fn, ms, _sagaEffects, onError) {
+  return function* worker(...args) {
+    while (true) {
+      try {
+        const pollingAction = yield take(key);
+        yield put({ type: `${key}${NAMESPACE_SEP}@@start` });
+        const task = yield fork(pollingForkFnCreator(fn, _sagaEffects, ms, onError), pollingAction);
+        yield take(toActionType(R.mergeLeft({ actionStatus: CANCEL_EFFECT }, getActionType(key))));
+        yield cancel(task);
+        yield put({ type: `${key}${NAMESPACE_SEP}@@end` });
       } catch (error) {
         onError(error, {
           key,
@@ -79,22 +105,13 @@ function handlerWrapperPolling(key, fn, ms, _sagaEffects, onError) {
         });
       }
     }
-  }
-  return function* racer(...args) {
-    yield race({
-      task: call(worker, ...args),
-      cancel: take(toActionType(R.mergeLeft({ actionStatus: CANCEL_EFFECT }, getActionType(key)))),
-    });
   };
 }
 
 function getSaga(config) {
   const { ms, type, actionType, sagaWithCatch, sagaWithPolling } = config;
   if (R.equals('watcher', type)) return sagaWithCatch;
-  if (R.equals('polling', type))
-    return function* () {
-      yield takeEvery(actionType, sagaWithPolling);
-    };
+  if (R.equals('polling', type)) return sagaWithPolling;
 
   if (R.equals('takeLatest', type))
     return function* () {

@@ -15,7 +15,7 @@ function createEffects(model) {
   function putResolve(action) {
     const { type } = action;
     const actionTypeElements = getActionType(type);
-    return sagaEffects.put.resolve({
+    return sagaEffects.putResolve({
       ...action,
       type: toActionType(actionTypeElements, model),
     });
