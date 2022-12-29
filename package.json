@@ -1,5 +1,5 @@
 {
-  "name": "@tikivn/mini-redux-toolkit",
+  "name": "@astra-sdk/mini-redux-toolkit",
   "version": "1.0.14",
   "module": "dist/index.js",
   "main": "dist/index.js",
